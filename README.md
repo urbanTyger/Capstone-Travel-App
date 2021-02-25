@@ -63,19 +63,24 @@ Please refer to the .env_sample file for the same information listed below.
 #### Weatherbit
 
 WEATHERBIT_URL = https://api.weatherbit.io/v2.0/forecast/daily?
+
 WEATHERBIT_KEY = *** insert your own key here ***
+
 WEATHERBIT_HISTORIC_URL = https://api.weatherbit.io/v2.0/history/hourly
 
 #### Pixabay
 
 PIXABAY_URL = https://pixabay.com/api/
+
 PIXABAY_KEY = *** insert your own key here ***
+
 PIXABAY_SPECS = &image_type=photo&safesearch=true&orientation=horizontal&min_width=800
 
 
 #### Geonames
 
 GEONAMES_KEY = *** insert your own key here ***
+
 GEONAMES_URL = http://api.geonames.org/searchJSON?q
 
 
