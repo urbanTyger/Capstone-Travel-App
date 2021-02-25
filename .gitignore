@@ -1,0 +1,7 @@
+node_modules/
+dist/
+package-*
+.env
+.vscode/
+__test__
+attributes*

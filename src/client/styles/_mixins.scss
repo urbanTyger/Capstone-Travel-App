@@ -1,0 +1,15 @@
+// functions
+@function text($color) {
+    @if (lightness($color) > 50) {
+        @return #000
+    }
+
+    @else {
+        @return #fff
+    }
+}
+
+@mixin dc($color) {
+    background-color: $color;
+    color: text($color)
+}

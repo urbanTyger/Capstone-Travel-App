@@ -1,0 +1,145 @@
+html {
+    font-size: 100%;
+    width: 100vw;
+    font-family: 'Dosis', sans-serif;
+    background-color: rgba(53, 72, 156, 0.048);
+    overflow-x: hidden;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+}
+
+
+.page-title {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.733);
+    padding: 20px;
+    z-index: 10;
+    border-bottom: 2px solid black;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 850px;
+    width: 100%;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.title {
+    display: inline;
+    font-size: 3rem;
+    margin: 0 20px;
+}
+
+.title-archive {
+    display: none;
+    position: relative;
+    margin: 0 10px;
+    color: rgb(255, 52, 52);
+    animation: wiggle 350ms linear 5 1s;
+    // transition: animation 1s;
+    font-weight: bold;
+}
+
+.container {
+    padding: 10px;
+}
+
+
+.btn {
+    background: rgba(255, 255, 255, 0.812);
+    padding: 8px 15px;
+    border-radius: 25px;
+    border: 6px solid rgba(0, 0, 0, 0.931);
+    font-family: inherit;
+    font-size: max(1rem, 1.1vw);
+    cursor: pointer;
+    transition: all 300ms linear;
+    width: fit-content;
+    overflow: hidden;
+    font-weight: bold;
+
+    &:hover {
+        border: 6px solid rgb(182, 182, 182);
+        // padding: 12px;
+        background: rgba(255, 255, 255, 0.719);
+    }
+
+    &:active {
+        background: transparent;
+        color: white;
+    }
+}
+
+button {
+    font-family: inherit;
+}
+
+footer {
+    display: flex;
+    justify-content: space-evenly;
+    background: white;
+    border-top: 2px solid black;
+    height: 50px;
+    font-size: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.footer-current-trips,
+.footer-archive {
+    cursor: pointer;
+    margin: 0 10px;
+
+
+    &:hover {
+        color: red;
+    }
+}
+
+::placeholder {
+    color: rgba(128, 128, 128, 0.6);
+}
+
+@media (min-width: 900px) {
+
+    html {
+        background-size: cover;
+        background-color: rgba(243, 243, 243, 0.363);
+        background-image: url('../media/images/crackedpaint.jpg');
+    }
+
+    html::before {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        min-height: 100vh;
+        max-height: 100%;
+        width: 100vw;
+        // background-image: url('../media/images/map.jpg');
+        // background-size: cover;
+        // background-repeat: repeat;
+        // filter: saturate(15%) invert(1) blur(5px);
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    footer {
+        font-size: 1.5rem;
+    }
+}

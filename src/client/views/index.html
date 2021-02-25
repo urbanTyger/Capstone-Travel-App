@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Travel Application">
+    <meta name="keywords" content="HTML, CSS, Node.js, travel planner, udacity">
+    <meta name="author" content="Thomas Miller">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Weekend Traveler</title>
+</head>
+
+<body>
+    <header>
+        <div class="page-title">
+            <div class="title-container">
+                <img class="logo" src="logo.svg" alt="">
+                <h1 class="title">Travel Planner<span class="title-archive">Archive</span></h1>
+                <button class="add-trip btn" onclick="return Client.enterDestination()">add trip</button>
+            </div>
+        </div>
+    </header>
+    <main id="trip-list">
+
+        <section class="card archived" data-id="Europe">
+            <div class="archivable" onclick="return Client.archiveCard(event)">Click here to archive this
+                trip!
+            </div>
+            <div class="card-trip-info container"
+                style="background-image: url('https://www.syracuse.edu/wp-content/uploads/london-large-image-1600x1067.jpg');">
+                <div class="shade">
+                    <div class="locations" title="Use EDIT below to enter details">
+                        <input class="upcoming-location city quick-edit active"
+                            onkeypress="return Client.enterKeyPressed(event)" value="madrid" disabled="true">
+                        </input>
+                        <input class="following-location city" value="paris" disabled="true"
+                            placeholder="Enter city here">
+                        <input class="following-location city" value="london" disabled="true"
+                            placeholder="Enter final city here">
+                    </div>
+                    <div class="weather">
+                        <input class="date quick-edit" type="date" value="2021-02-10" disabled="true"
+                            onchange="Client.clearDaysAway()" min="2021-02-09"></input>
+                        <div class="trip-date-weather">
+                            <div class="icon"><img class="weather-icon" src="icons/weather/a01.svg" alt="weather">
+                            </div>
+                            <div class="hi-low">
+                                <div class="temp-high">33°C</div>
+                                <div class="temp-low">-5°C</div>
+                            </div>
+                        </div>
+                        <div class="desc">Partly cloudy throughout the day</div>
+                    </div>
+                </div>
+                <div class="weather-forecast container">
+                    <div class="forecast-card">
+                        <div class="date">12-19</div>
+                        <img class="icon" src="./icons/weather/a01.svg"></img>
+                        <div class="high">22°C</div>
+                        <div class="low">15°C</div>
+                    </div>
+                    <div class="forecast-card">
+                        <div class="date">12-20</div>
+                        <img class="icon" src="./icons/weather/a01.svg"></img>
+                        <div class="high">20°C</div>
+                        <div class="low">10°C</div>
+                    </div>
+                    <div class="forecast-card">
+                        <div class="date">12-21</div>
+                        <img class="icon" src="./icons/weather/a01.svg"></img>
+                        <div class="high">13°C</div>
+                        <div class="low">5°C</div>
+                    </div>
+                </div>
+
+                <div class="upcoming-trip-days">London is 20 Days away</div>
+            </div>
+            <div class="card-trip-info-details container">
+                <div class="flights" title="Use EDIT below to enter details">
+                    <div class="depart">
+                        <fieldset class="departure">
+                            <legend>departure</legend>
+                            <input class="airport-code quick-edit" maxlength="3" placeholder="XYZ" pattern="[A-Za-z]{3}"
+                                title="AIRPORT Code" disabled="true" value="TRR">
+                            <input type="text" class="flight-time quick-edit" maxlength="4"
+                                pattern="[0-2][0-9][0-5][0-9]" max="2359" placeholder="1030" title="24hr-time"
+                                disabled="true" value="1030">
+                            <span class="flight-text"></span>
+                            <input type="text" class="flight-number quick-edit" placeholder="LH31 UDCITY AIR"
+                                maxlength="15" disabled="true" value="LH31 UDC Air">
+                        </fieldset>
+                    </div>
+                    <div class="arrive">
+                        <fieldset class="arrival">
+                            <legend>arrival</legend>
+                            <input class="airport-code quick-edit" maxlength="3" placeholder="XYZ" pattern="[A-Za-z]{3}"
+                                title="AIRPORT Code" disabled="true" value="LON">
+                            <input type="text" class="flight-time quick-edit" maxlength="4"
+                                pattern="[0-2][0-9][0-5][0-9]" max="2359" placeholder="1030" title="24hr-time"
+                                disabled="true" value="1007">
+                            <span class="flight-text"></span>
+                            <input type="text" class="flight-number quick-edit" placeholder="LH31 UDCITY AIR"
+                                maxlength="15" disabled="true" value="LH78 Bee Air">
+                        </fieldset>
+                    </div>
+                </div>
+                <fieldset class="hotel-list" title="Use EDIT below to enter details">
+                    <legend>lodging</legend>
+                    <div class="hotel">
+                        <input class="hotels-name quick-edit" placeholder="Enter Hotel Name" disabled="true"
+                            value="Grand Hotel">
+                        <input class="hotels-address quick-edit" placeholder="Enter Hotel Address" disabled="true"
+                            value="789 Main Street">
+                    </div>
+                </fieldset>
+
+                <div class="hotel-list-notes" title="Use EDIT below to enter/modify details">
+                    <fieldset class="list">
+                        <legend onclick="return Client.addSpecifics(event, 'list')">packing list</legend>
+                        <div class="list-container quick-edit">
+                            <ul class="list-items">
+                            </ul>
+                        </div>
+                        <div class="btn" onclick="return Client.addSpecifics(event, 'list')">packing list</div>
+                    </fieldset>
+                    <fieldset class="notes">
+                        <legend onclick="return Client.addSpecifics(event, 'notes')">notes</legend>
+                        <textarea class="trip-notes quick-edit" name="notes" cols="30" rows="10" wrap="hard"
+                            placeholder="Add any notes to this trip here (max 250 characters)" disabled="true"
+                            maxlength="250" value="This is the notes section"></textarea>
+                        <div class="btn" onclick="return Client.addSpecifics(event, 'notes')">notes</div>
+                    </fieldset>
+                </div>
+            </div>
+            <span class="delete-trip"></span><span class="archived-trip"
+                title="This trip is no longer editable"></span><span class="edit-trip"></span>
+        </section>
+
+
+        <!-- Final Section for add button -->
+        <section class="more-trips">
+            <h1>Enter Your Next Trip Here</h1>
+            <p class="potential-weather"></p>
+            <form class="card new-trip-form">
+                <div class="new-trip-details">
+                    <input type="text" class="new-city" placeholder="Enter Location (3 to 20 Letters only)" min="3"
+                        max="20" onClick="this.select()" required>
+                    <input type="date" class="new-trip-date" min="${minDate}" required>
+                </div>
+                <div class="new-trip-btns">
+                    <button type="button" class="check-trip btn">check city weather</button>
+                    <button type="submit" class="save-trip btn">save trip</button>
+                    <button type="reset" class=" cancel-trip btn">cancel</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <footer class="container">
+        <span>&copy Thomas Miller @Udacity</span><span><span class="footer-current-trips">🏖 Current Trips</span><span
+                class="footer-archive">📚 Archive</span></span>
+    </footer>
+</body>
+
+</html>

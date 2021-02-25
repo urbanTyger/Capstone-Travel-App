@@ -1,0 +1,16 @@
+// global Variables
+@import "variables";
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rancho&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@400;700&display=swap');
+
+// stylesheets
+@import "./resets.scss";
+@import "./mixins";
+@import "./base.scss";
+@import "./card.scss";
+@import "./more-trips.scss";
+@import "./animations.scss";

@@ -1,0 +1,102 @@
+.more-trips {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: inherit;
+    margin: 200px auto;
+
+
+    h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        text-decoration: wavy underline 1px;
+    }
+
+    p {
+        margin-top: 20px;
+        letter-spacing: 0.3rem;
+    }
+}
+
+.new-trip-form {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    background-image: url('../media/images/compass-5261062_1920.jpg');
+    background-size: cover;
+    background-position: center center;
+    padding: 10px;
+    margin: 20px auto;
+    overflow: auto;
+}
+
+.new-trip-details {
+    width: 100%;
+    display: flex;
+
+    input {
+        font-size: max(1rem, 1.5vw);
+        padding: 5px;
+        font-family: inherit;
+        border-radius: $default-radius;
+    }
+
+    .new-city {
+        flex: 4;
+
+        &:focus {
+            outline: none;
+            border: 3px solid blue;
+            background: rgb(233, 255, 213);
+        }
+    }
+
+    .new-trip-date {
+        flex: 1.8;
+        margin-left: 10px;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
+.new-trip-btns {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 25px;
+
+    *:not(:last-child) {
+        margin-right: 20px;
+    }
+}
+
+.check-trip {
+    flex: 3;
+}
+
+.save-trip {
+    flex: 1;
+    background: rgba(194, 194, 194, 0.9);
+    font-weight: bold;
+    border: 6px solid rgba(6, 160, 27, 0.931);
+}
+
+.cancel-trip {
+    flex: 1;
+    background: rgba(194, 194, 194, 0.6);
+    font-weight: bold;
+    border: 6px solid rgba(238, 20, 0, 0.931);
+
+}
+
+.potential-weather {
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    color: blue;
+    background-color: rgba(248, 246, 246, 0.411);
+    border: 1px solid black;
+    border-radius: $default-radius;
+    padding: 10px;
+}

@@ -1,0 +1,47 @@
+@keyframes spinLeft {
+    0% {
+        transform-origin: bottom left;
+        transform: rotate(30deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes spinRight {
+    0% {
+        transform-origin: bottom right;
+        transform: rotate(-30deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes exitLeft {
+    0% {
+        left: 0px;
+        max-height: 0;
+    }
+
+    100% {
+        left: -1000px;
+        min-height: 0;
+    }
+}
+
+@keyframes wiggle {
+    0% {
+        transform: rotate(15deg);
+    }
+
+    50% {
+        transform: rotate(-15deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}

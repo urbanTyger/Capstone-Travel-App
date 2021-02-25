@@ -1,0 +1,752 @@
+.card {
+    background-color: rgba(255, 255, 255, 0.9);
+    width: min(100vw, 900px);
+    min-height: 550px;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 50px auto 200px auto;
+    overflow: hidden;
+    position: relative;
+    top: 0px;
+    transition: min-height 1000ms ease-out;
+
+    &.archived {
+        filter: grayscale(80%);
+        display: none;
+
+        .archivable {
+            visibility: hidden;
+        }
+
+        .edit-trip {
+            display: none;
+        }
+
+        .archived-trip {
+            display: inline;
+        }
+
+        .delete-trip::before {
+            filter: none;
+        }
+    }
+
+    &.active-edit .quick-edit {
+        background: rgba(255, 255, 255, 0.356);
+        color: blue;
+        position: relative;
+        border-radius: 5px;
+        border: 2px dashed rgb(86, 178, 231);
+        cursor: text;
+
+        &.active {
+            border-left: 3px solid red;
+            padding-left: 10px;
+        }
+    }
+}
+
+// when the trip fits the date requirement for archiving
+.archivable {
+    display: none;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    margin-top: -2px;
+    @include dc(rgba(255, 166, 0, 0.807));
+    font-weight: bold;
+    font-family: inherit;
+    font-size: larger;
+    letter-spacing: 0.4rem;
+    cursor: pointer;
+}
+
+.quick-edit {
+    border: 2px solid transparent;
+    transition: all 200ms ease-out;
+}
+
+// when deleting a card
+.fly-away {
+    animation: exitLeft 400ms ease-out;
+    left: -1000px;
+    transform: rotate(5deg);
+    transition: transform 900ms,
+        position 400ms 400ms,
+        min-height 1000ms;
+    max-height: 0;
+}
+
+
+.delete-trip {
+    background: url('https://api.iconify.design/octicon:trashcan-16.svg'), rgb(0, 225, 255);
+    background-position: 80% 25%;
+    left: -40px;
+    bottom: -40px;
+
+    &:hover {
+
+        &::after {
+            content: 'Delete Trip';
+            left: 85px;
+            bottom: 50px;
+            animation: spinLeft 500ms ease-out;
+        }
+    }
+}
+
+.archived-trip {
+    display: none;
+
+    &::after {
+        content: 'Archived Trip';
+        width: 150px;
+        right: 0;
+        bottom: 8px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        position: absolute;
+    }
+
+}
+
+.edit-trip {
+    background: url('https://api.iconify.design/bx:bxs-pencil.svg'), yellow;
+    background-position: 20% 25%;
+    right: -40px;
+    bottom: -40px;
+
+    &.edit-done {
+        background: url('https://api.iconify.design/ic:round-done-outline.svg'), rgb(234, 77, 255);
+        background-position: 20% 25%;
+        background-repeat: no-repeat;
+        right: -40px;
+        bottom: -40px;
+
+        &:hover {
+            &::after {
+                content: 'Finish Editing Mode';
+                width: 200px;
+                right: 10px;
+                bottom: 50px;
+                animation: spinRight 500ms ease-out;
+            }
+        }
+
+    }
+
+    &:hover {
+
+        &::after {
+            content: 'Edit Trip Mode';
+            right: 75px;
+            bottom: 50px;
+            animation: spinRight 500ms ease-out;
+        }
+    }
+}
+
+.delete-trip,
+.edit-trip {
+    filter: invert(1);
+    background-size: 25px;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+    opacity: .7;
+
+    &:hover {
+        opacity: 1;
+
+        &::after {
+            filter: invert(1);
+            width: 100px;
+            position: absolute;
+        }
+    }
+}
+
+
+
+.card-trip-info {
+    background: url('../media/images/cityPlaceholder.jpg') rgba(0, 0, 0, 0.856);
+    background-size: cover;
+    background-position: center;
+    min-height: 360px;
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-image 200ms ease-in;
+
+}
+
+.shade {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.644);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.486);
+    padding: 10px;
+    font-size: max(1.5rem, 2.5vw);
+}
+
+.weather {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: right;
+
+    input.date {
+        text-align: right;
+        color: white;
+        width: fit-content;
+        align-self: flex-end;
+        background-color: transparent;
+        font-size: max(1.5rem, 2.5vw);
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        background: transparent;
+        bottom: 0;
+        color: transparent;
+        cursor: pointer;
+        height: auto;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+    }
+
+    .date {
+        width: fit-content;
+        align-self: flex-end;
+    }
+
+    .desc {
+        display: block;
+        clear: both;
+        font-size: max(1.2rem, 1.4vw);
+        color: rgba(255, 255, 255, 0.849);
+        font-style: italic;
+    }
+}
+
+.icon img {
+    width: 150%;
+    margin: -18px -5px;
+    padding-right: 20px;
+}
+
+.trip-date-weather {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hi-low {
+    margin: auto 0;
+
+    >div {
+        margin: 5px 0;
+        font-size: max(0.9rem, 1vw);
+        text-align: left;
+    }
+}
+
+.locations {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    text-transform: capitalize;
+    color: white;
+
+    input {
+        text-transform: capitalize;
+        display: inline-block;
+        transition: all 300ms ease-out;
+        cursor: pointer;
+        background: transparent;
+        font-family: inherit;
+        color: white;
+        min-width: 60%;
+        max-width: 85%;
+        font-size: 80%;
+        line-height: 2rem;
+    }
+
+
+}
+
+
+.upcoming-location {
+    width: 80%;
+    height: fit-content;
+    text-transform: capitalize;
+}
+
+.following-location {
+    &.unknown {
+        display: none;
+    }
+}
+
+.following-location:nth-child(2) {
+    font-size: 80%;
+    align-items: center;
+    height: auto;
+
+}
+
+.following-location:nth-child(3) {
+    font-size: 60%;
+    height: auto;
+
+}
+
+.city {
+    border: 2px solid transparent;
+    transition: all 200ms ease-out;
+
+    &.active {
+        margin-left: 15px;
+        font-weight: bold;
+        border-left: 7px solid red;
+        padding-left: 5px;
+    }
+}
+
+.temp-high::before {
+    content: 'High: ';
+}
+
+.temp-low::before {
+    content: 'Low: ';
+}
+
+.weather-forecast {
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    justify-content: space-evenly;
+    opacity: 0;
+    transition: opacity 1500ms;
+    pointer-events: none;
+
+    .forecast-card:nth-child(1) {
+        opacity: 0;
+        transition: all 200ms 300ms;
+    }
+
+    .forecast-card:nth-child(2) {
+        opacity: 0;
+        transition: all 200ms 400ms;
+    }
+
+    .forecast-card:nth-child(3) {
+        opacity: 0;
+        transition: all 200ms 500ms;
+    }
+
+}
+
+
+.forecast-card {
+    display: flex;
+    flex-direction: column;
+    font-family: inherit;
+    text-align: center;
+    width: 110px;
+    margin: 0 5px;
+    padding: 5px 15px;
+    background: rgba(0, 0, 0, 0.746);
+    border-radius: $default-radius;
+    border: 1px solid rgba(255, 255, 255, 0.705);
+
+
+    .date {
+        color: white;
+        text-align: center;
+
+        &::before {
+            content: 'Date: ';
+            font-weight: bold;
+
+        }
+    }
+
+    .icon {
+        width: 50px;
+        margin: -5px;
+        align-self: center;
+    }
+
+    .high {
+        margin-bottom: 5px;
+    }
+
+    .high::before {
+        content: 'High: ';
+        font-weight: bold;
+    }
+
+    .low::before {
+        content: 'Low: ';
+        font-weight: bold;
+    }
+}
+
+
+.upcoming-trip-days {
+    background-color: rgba(0, 0, 0, 0.657);
+    border-radius: 5px;
+    width: fit-content;
+    text-align: center;
+    margin: 0 auto;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+}
+
+
+.card-trip-info-details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+}
+
+.flights {
+    display: flex;
+    font-size: 1.2rem;
+
+
+    & h1 {
+        margin: 3px 0;
+    }
+
+    & div {
+        flex: 1;
+        margin: auto 0;
+    }
+}
+
+fieldset {
+    width: 100%;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    padding: 15px auto;
+    font-size: max(1.1rem, 1.8vw);
+
+    legend {
+        padding: 0 5px;
+    }
+
+    h1 {
+        height: 30px;
+        line-height: 30px;
+        margin: 0 15px;
+        text-align: center;
+    }
+
+}
+
+.flight-text::after {
+    content: 'flight:';
+    letter-spacing: -0.05rem;
+    color: gray;
+    font-size: 80%;
+}
+
+.departure {
+    border-left: 1px solid gray;
+    border-radius: 10px 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & input {
+        font-size: max(1rem, 1.2vw);
+        font-family: inherit;
+        background: transparent;
+        text-transform: uppercase;
+        border: 2px solid transparent;
+        margin: 5px 0;
+    }
+
+    .airport-code {
+        min-width: 60px;
+        max-width: 3.5ch;
+        text-align: center;
+
+        &:invalid {
+            color: red;
+        }
+    }
+
+    .flight-time {
+        max-width: 5.5ch;
+        text-align: center;
+
+        &:invalid {
+            color: red;
+        }
+    }
+
+    .flight-number {
+        width: 100%;
+        font-size: max(1rem, 1.2vw);
+        margin: 0 5px;
+    }
+}
+
+
+
+.arrival {
+    border-left: 2px dashed lightgray;
+    border-right: 1px solid gray;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & input {
+        font-size: max(1rem, 1.2vw);
+        font-family: inherit;
+        background: transparent;
+        text-transform: uppercase;
+        border: 2px solid transparent;
+        margin: 5px 0;
+    }
+
+
+    .airport-code {
+        min-width: 60px;
+        max-width: 3.5ch;
+        text-align: center;
+
+        &:invalid {
+            color: red;
+        }
+    }
+
+    .flight-time {
+        max-width: 5.5ch;
+        text-align: center;
+
+        &:invalid {
+            color: red;
+        }
+    }
+
+    .flight-number {
+        width: 100%;
+        font-size: max(1rem, 1.2vw);
+        margin: 0 5px;
+    }
+}
+
+.hotel-list {
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid gray;
+    z-index: 10;
+    background: white;
+}
+
+.hotel {
+    display: flex;
+}
+
+.hotels-name {
+    flex: 1;
+}
+
+.hotels-address {
+    flex: 2;
+}
+
+.hotels-name,
+.hotels-address {
+    margin: 10px 5px 5px 5px;
+    min-height: 25px;
+    width: 99%;
+    font-family: inherit;
+    font-size: max(1rem, 1.6vw);
+    background-color: white;
+
+}
+
+.hotel-list-notes {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    .list,
+    .notes {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+        border-radius: 10px;
+        height: 150px;
+        flex: 1;
+        background-position: center center;
+        background-size: 130%;
+        transition: background-size 500ms ease-out;
+
+        &:hover {
+            background-size: 180%;
+        }
+    }
+
+
+    .list {
+        background-image: url('../media/images/packinglist.jpg');
+        margin-right: 10px;
+        position: relative;
+
+        legend {
+            display: none;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            position: absolute;
+            top: 0px;
+            left: 0;
+            transform: translateY(-60%);
+            padding-bottom: 4px;
+            z-index: 5;
+
+
+            &:hover::after {
+                padding: 1px 10px;
+                font-weight: bold;
+            }
+
+            &::after {
+                content: 'close';
+                background: red;
+                border-radius: 5px;
+                color: white;
+                margin-left: 10px;
+                padding: 1px 3px;
+                transition: all 200ms linear;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.514);
+                cursor: pointer;
+            }
+
+        }
+
+        .list-container {
+            display: none;
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-color: white;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .list-items {
+            padding: 15px 10px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .list-items li {
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+
+            &::before {
+                content: '◻ ';
+            }
+
+            &.checked {
+                text-decoration: line-through;
+                color: gray;
+                margin-left: 5px;
+            }
+
+            &.checked::before {
+                content: '✔ '
+            }
+        }
+
+        &.active-list .btn {
+            display: none;
+        }
+
+        &.active-list .list-container,
+        &.active-list legend {
+            display: block;
+        }
+    }
+
+    .notes {
+        position: relative;
+        background-image: url('../media/images/notes.jpg');
+        margin-left: 10px;
+
+        legend {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            position: absolute;
+            top: 0px;
+            left: 0;
+            transform: translateY(-70%);
+            z-index: 5;
+
+            &:hover::after {
+                padding: 1px 10px;
+                font-weight: bold;
+            }
+
+            &::after {
+                content: 'close';
+                background: red;
+                border-radius: 5px;
+                color: white;
+                margin-left: 10px;
+                padding: 1px 3px;
+                transition: all 200ms linear;
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.514);
+                cursor: pointer;
+            }
+        }
+
+        .trip-notes {
+            display: none;
+            resize: none;
+            font-family: inherit;
+            width: 100%;
+            height: 100%;
+            border: transparent;
+            padding: 20px 10px;
+            line-height: 1.4rem;
+            font-size: 1.3rem;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.966);
+            z-index: 1;
+        }
+
+        &.active-notes .btn {
+            display: none;
+        }
+
+        &.active-notes .trip-notes,
+        &.active-notes legend {
+            display: block;
+        }
+    }
+}
