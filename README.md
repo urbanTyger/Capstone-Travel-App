@@ -37,7 +37,7 @@ On the bottom left of each card you can delete the trip. A confirmation is shown
 
 *Sorting*
 
-Each trip is independently sorted once a start date is given for each city. The trips cards will show up as you have created them and not sort with other trip cards.
+Each trip is independently sorted once a start date is given for each city. The trips cards will show up as you have created them. After refreshing the page, each card will be sorted with other trip cards and show up in the order of the first city date.
 
 *Archiving*
 
@@ -107,7 +107,7 @@ Animated weather icons are included to make the app more appealing
 
 ### Data storage
 
-This app does not use a persistent database but local storage. All of the data saved will be linked to the same PC/Browser and not shareable among devices.
+This app does not use a persistent database but local storage. All of the data saved will be linked to the same PC/Browser and not shareable among devices. The data can be accessed after you refresh the page. If you delete the local storage, the data will be lost.
 
 
 #### Task List / Future Features
