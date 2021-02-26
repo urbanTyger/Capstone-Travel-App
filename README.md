@@ -15,22 +15,28 @@ Please note, the earliest date selectable to start a trip is "tomorrow."
 #### Trip Card
 
 *City specific information*
+
 Each card shows the city name, background image, weather, departure flight information from your current city, arrival flight to the city on the card, and one hotel with address for your stay.
 
 *Weather*
+
 Depending on the number of days to the start of the trip, historic weather or a 4-day forecast is shown. Historic weather is the weather from last year with description and average temperature.
 Anything a week or less will show a 4-day forecast, starting with the start date of the trip, and 3 additional mini-cards with dates. Hover over the weather icon in the mini-cards to see their respective description of the weather.
 
 *Trip shared information*
+
 There are a predetermined packing list of items and notes for the trip. The packing list items can be edited when in Edit mode.
 
 *Editing*
+
 Only the **active** city on the trip can have its information edited. On the bottom right of each card, there is an edit mode button. Once finished editing, click it again to close the editing mode and pull the missing data from the APIs. Once a trip is archived, it can no longer be edited.
 
 *Deleting*
+
 On the bottom left of each card you can delete the trip. A confirmation is shown before deletion from the page and storage object/local storage.
 
 *Sorting*
+
 Each trip is independently sorted once a start date is given for each city. The trips cards will show up as you have created them and not sort with other trip cards.
 
 *Archiving*
