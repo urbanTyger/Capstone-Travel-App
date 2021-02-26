@@ -1,0 +1,15 @@
+{
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backgroundurl.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Miller (https://github.com/urbanTyger)",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1"
+  }
+}

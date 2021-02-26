@@ -1,0 +1,27 @@
+[build]
+  functions = "functions"
+  publish = "dist"
+
+[[redirects]]
+  from = "/historicweather"
+  to = "/.netlify/functions/historicweather/"
+  status = 201
+  force = true
+
+[[redirects]]
+  from = "/weatherforecast"
+  to = "/.netlify/functions/weatherforecast/"
+  status = 201
+  force = true
+
+[[redirects]]
+  from = "/backgroundurl"
+  to = "/.netlify/functions/backgroundurl/"
+  status = 201
+  force = true
+
+[[redirects]]
+  from = "/geolocation"
+  to = "/.netlify/functions/geolocation/"
+  status = 201
+  force = true
