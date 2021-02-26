@@ -1,9 +1,60 @@
-import { daysAwayText, calcDaysAway, minDate, newID, storage, loadCardData, checkListener } from './app'
+import {
+    daysAwayText, calcDaysAway, minDate, newID,
+    storage, loadCardData, checkListener, tripList,
+    moreTrips, pullData, getDate
+} from './app'
 
-function createCard(cityName, tripDate) {
-    let daysAway = daysAwayText(cityName, calcDaysAway(tripDate));
-    let secondCity = "next location";
-    let finalCity = "final location";
+// creates a new location to store data in the main array
+// returns and 1st array for the city added
+function newStorageItem(mainStorageArray, cityName, tripDate) {
+    // get new storage position
+    let x = mainStorageArray.length;
+    mainStorageArray[x] = {
+        "id": newID(cityName), "data": {
+            "cities": [
+                {
+                    "name": cityName.toLowerCase(),
+                    "date": tripDate,
+                    "imageCitySearched": "",
+                    "weather": [{ "icon": "", "high": "", "low": "", "desc": "" }],
+                    "flight": {
+                        "depart": { "code": "", "time": "", "info": "" },
+                        "arrive": { "code": "", "time": "", "info": "" }
+                    },
+                    "hotel": { "name": "", "address": "" }
+                },
+                {
+                    "name": "next location",
+                    "date": "",
+                    "imageCitySearched": "",
+                    "weather": [{ "icon": "new.svg", "high": "", "low": "", "desc": "???" }],
+                    "flight": {
+                        "depart": { "code": "", "time": "", "info": "" },
+                        "arrive": { "code": "", "time": "", "info": "" }
+                    },
+                    "hotel": { "name": "", "address": "" }
+                },
+                {
+                    "name": "final location",
+                    "date": "",
+                    "imageCitySearched": "",
+                    "weather": [{ "icon": "new.svg", "high": "", "low": "", "desc": "???" }],
+                    "flight": {
+                        "depart": { "code": "", "time": "", "info": "" },
+                        "arrive": { "code": "", "time": "", "info": "" }
+                    },
+                    "hotel": { "name": "", "address": "" }
+                }
+            ]
+        }
+    };
+    return mainStorageArray[x]
+}
+
+function createCard(tripArray) {
+    let unknown = "";
+    let daysAway = daysAwayText(tripArray.data.cities[0].name, calcDaysAway(tripArray.data.cities[0].date));
+    if (tripArray.data.cities[1].name === "next location" || tripArray.data.cities[1].name.length < 3) unknown = "unknown";
     const template = `
     <div class="archivable" onclick="return Client.archiveCard(event)">Click here to archive/unarchive this
                 trip!
@@ -11,13 +62,13 @@ function createCard(cityName, tripDate) {
     <div class="card-trip-info container">
                 <div class="shade">
                     <div class="locations">
-                        <input class="upcoming-location city quick-edit active" onClick="this.select()" onkeypress="return Client.enterKeyPressed(event)" value="${cityName}" disabled="true" title="Use EDIT below to add more locations (max total of 3)">
+                        <input class="upcoming-location city quick-edit active" onClick="this.select()" onkeypress="return Client.enterKeyPressed(event)" value="${tripArray.data.cities[0].name}" disabled="true" title="Use EDIT below to add more locations (max total of 3)">
                         </input>
-                        <input class="following-location city" onClick="this.select()" disabled="true" title="Enter 2nd location here" value="${secondCity}">
-                            <input class="following-location city unknown" onClick="this.select()" disabled="true" title="Enter final location here" value="${finalCity}">
+                        <input class="following-location city" onClick="this.select()" disabled="true" title="Enter 2nd location here" value="${tripArray.data.cities[1].name}">
+                            <input class="following-location city ${unknown}" onClick="this.select()" disabled="true" title="Enter final location here" value="${tripArray.data.cities[2].name}">
         </div>
                             <div class="weather">
-                                <input class="date quick-edit" type="date" value="${tripDate}" disabled="true"
+                                <input class="date quick-edit" type="date" value="${tripArray.data.cities[0].date}" disabled="true"
                                     onchange="Client.clearDaysAway()" min="${minDate}"></input>
                                 <div class="trip-date-weather">
                                     <div class="icon"><img class="weather-icon"></div>
@@ -88,53 +139,28 @@ function createCard(cityName, tripDate) {
    `
     const sectionCard = document.createElement('section');
     sectionCard.classList.add('card');
-    let cardID = newID(cityName);
-    sectionCard.setAttribute("data-id", cardID);
+    if (tripArray.archived) sectionCard.classList.add('archived');
+    sectionCard.setAttribute("data-id", tripArray.id);
     sectionCard.innerHTML = template;
     const newLocations = sectionCard.querySelector('.locations');
     newLocations.addEventListener('mousedown', e => checkListener(e));
-    let x = storage.length;
-    storage[x] = {
-        "id": cardID, "data": {
-            "cities": [
-                {
-                    "name": cityName.toLowerCase(),
-                    "date": tripDate,
-                    "imageCitySearched": "",
-                    "weather": [{ "icon": "", "high": "", "low": "", "desc": "" }],
-                    "flight": {
-                        "depart": { "code": "", "time": "", "info": "" },
-                        "arrive": { "code": "", "time": "", "info": "" }
-                    },
-                    "hotel": { "name": "", "address": "" }
-                },
-                {
-                    "name": secondCity.toLowerCase(),
-                    "date": "",
-                    "imageCitySearched": "",
-                    "weather": [{ "icon": "new.svg", "high": "", "low": "", "desc": "???" }],
-                    "flight": {
-                        "depart": { "code": "", "time": "", "info": "" },
-                        "arrive": { "code": "", "time": "", "info": "" }
-                    },
-                    "hotel": { "name": "", "address": "" }
-                },
-                {
-                    "name": finalCity.toLowerCase(),
-                    "date": "",
-                    "imageCitySearched": "",
-                    "weather": [{ "icon": "new.svg", "high": "", "low": "", "desc": "???" }],
-                    "flight": {
-                        "depart": { "code": "", "time": "", "info": "" },
-                        "arrive": { "code": "", "time": "", "info": "" }
-                    },
-                    "hotel": { "name": "", "address": "" }
-                }
-            ]
-        }
-    };
-    document.body.style.cursor = "progress";
-    loadCardData(storage[x].data.cities[0], sectionCard)
+    document.body.style.cursor = "waiting";
+    return sectionCard;
 }
 
-export { createCard }
+// upon loading of page, the data from local storage will be used to add back active cards
+function repopulatePage(mainStorageArray) {
+    for (let i = 0; i < mainStorageArray.length; i++) {
+        let storedCard = createCard(mainStorageArray[i]);
+        tripList.insertBefore(storedCard, moreTrips);
+        storedCard.focus();
+        pullData(mainStorageArray[i].data.cities[0].name, storedCard);
+        // updatePackingLists();
+    }
+    document.body.style.cursor = "auto";
+    document.body.scrollTo(0, 0);
+
+}
+
+
+export { newStorageItem, createCard, repopulatePage }

@@ -51,7 +51,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                { from: "src/client/views/icons/weather", to: "icons/weather" },
+                { from: "src/client/views/icons/weather/", to: "icons/weather" },
                 { from: "src/client/views/logo.svg", to: "icons/" },
             ],
         }),

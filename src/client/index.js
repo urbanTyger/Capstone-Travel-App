@@ -2,9 +2,9 @@
 import {
     archiveCard, enterKeyPressed, clearDaysAway, calcDaysAway,
     editModeStatus, addSpecifics, editPackingList,
-    enterDestination, minDate
+    enterDestination, minDate, tripList, moreTrips, pullData
 } from './js/app';
-import { createCard } from './js/createCard';
+import { newStorageItem, createCard, repopulatePage } from './js/createCard';
 import { getDate } from './js/date';
 
 // import styles
@@ -22,8 +22,8 @@ if ('serviceWorker' in navigator) {
 }
 
 export {
-    minDate, getDate,
+    minDate, getDate, newStorageItem, tripList, moreTrips,
     archiveCard, enterKeyPressed, clearDaysAway, calcDaysAway,
     editModeStatus, addSpecifics, editPackingList, createCard,
-    enterDestination
+    enterDestination, pullData, repopulatePage
 }

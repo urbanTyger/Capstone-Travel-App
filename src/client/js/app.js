@@ -1,3 +1,4 @@
+import { repopulatePage } from './createCard';
 // variables
 const editTrip = document.querySelector('.edit-trip');
 const deleteTrip = document.querySelector('.delete-trip');
@@ -52,6 +53,7 @@ const recommendedPacking = [
 // storage items and functions
 let storage = [{
     "id": "Europe",
+    "archived": true,
     "data": {
         "cities": [
             {
@@ -95,6 +97,18 @@ let storage = [{
 // save onscreen data from array to the local storage
 // takes and object and converts to string for local storage 
 function setLocalStorage(databaseArray) {
+    databaseArray.sort(function (a, b) {
+        if (a.data.cities[0].date < b.data.cities[0].date) {
+            return -1;
+        }
+        if (a.data.cities[0].date > b.data.cities[0].date) {
+            return 1;
+        }
+        // names must be equal
+        return 0;
+        // return a.date - b.date
+    })
+
     let storageData = JSON.stringify(databaseArray);
     localStorage.setItem("database", storageData)
 }
@@ -107,6 +121,8 @@ function getLocalStorage() {
 // initial creation of the local storage string if not existing
 if (!localStorage.getItem("database")) setLocalStorage(storage);
 getLocalStorage();
+
+repopulatePage(storage);
 
 // used as "unique" identifier
 let storageCityName = "";
@@ -141,7 +157,10 @@ function loadAllListeners() {
 
     newTripForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        Client.createCard(newCity.value.trim(), newTripDate.value);
+        ("date entered", newTripDate.value)
+        const newLocation = Client.newStorageItem(storage, newCity.value.trim(), newTripDate.value)
+        const createdCard = Client.createCard(newLocation);
+        loadCardData(newLocation.data.cities[0], createdCard)
         newTripForm.reset();
         potentialWeather.innerHTML = "";
     })
@@ -291,7 +310,10 @@ function enterDestination() {
 
 // archive the current card
 function archiveCard(e) {
-    e.target.closest('.card').classList.toggle('archived');
+    let cardToArchive = e.target.closest('.card');
+    cardToArchive.classList.toggle('archived');
+    storage[cardStorageLocation(cardToArchive)].archived = true;
+    setLocalStorage(storage);
 }
 
 // set the current clicked city as active
@@ -454,7 +476,7 @@ function getValidWeather(data, card) {
                             document.body.style.cursor = "auto";
                             return;
                         })
-                        .catch(err => alert("There was a problem...", err))
+                        .catch(err => alert("There was a problem getting the forecast...", err))
                 }).catch(err => alert("Please check city name as it could not be found..."))
         } else { // fetch historical data
             let datesToAPI = checkDateRange(data.date);
@@ -740,6 +762,7 @@ function setCityID(activeCard) {
 function checkToArchive(citiesArray, card) {
     if (calcDaysAway(citiesArray[0].date) < -7) card.getElementsByClassName('archivable')[0].style.display = "block";
     else card.getElementsByClassName('archivable')[0].style.display = "none";
+
 }
 
 // get the array index of the current card information
@@ -771,7 +794,9 @@ function clearDaysAway() {
 
 // calculate the days to the trip from today
 function calcDaysAway(date) {
-    let today = Date.parse(Client.getDate());
+    let newDay = new Date();
+    let today = Date.parse(newDay);
+    // let today = Date.parse(Client.getDate(date));
     const tripDate = Date.parse(date);
     const daysAway = Math.ceil(((tripDate - today) / 86400000).toFixed(1));
     return daysAway;
@@ -821,7 +846,7 @@ function editPackingList(event) {
 }
 
 export {
-    daysAwayText, minDate, newID, storage, loadCardData,
+    daysAwayText, minDate, newID, storage, loadCardData, tripList, moreTrips, pullData,
     enterKeyPressed, clearDaysAway, calcDaysAway, editModeStatus,
     addSpecifics, editPackingList, enterDestination,
     archiveCard, checkListener
