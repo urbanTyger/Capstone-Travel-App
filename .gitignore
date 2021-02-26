@@ -3,5 +3,4 @@ dist/
 package-*
 .env
 .vscode/
-__test__
 attributes*
