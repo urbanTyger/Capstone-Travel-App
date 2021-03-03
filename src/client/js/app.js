@@ -555,7 +555,8 @@ function formatDate(date) {
 function getBackgroundURL(city) {
     document.body.style.cursor = "waiting";
     const cityImage = city.imageCitySearched.toLowerCase();
-    if (cityImage && cityImage === city.name.toLowerCase() || city.name === "next location" || city.name === "final location") return;
+    if (city.name === "next location" || city.name === "final location") return;
+    // if (cityImage && cityImage === city.name.toLowerCase() || city.name === "next location" || city.name === "final location") return;
     fetch('/backgroundurl', {
         method: 'POST',
         headers: {
