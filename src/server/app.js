@@ -21,14 +21,27 @@ console.log(__dirname);
 app.get('/', function (req, res) {
     res.status(200).json({ "answer": "Hello World!" });
 })
-
-app.post(('/historicweather'), async (request, response) => {
+// uses weatherbit and is limited to a few weeks.
+app.post(('/old_historicweather'), async (request, response) => {
     const dataString = request.body;
     const requestString = `${process.env.WEATHERBIT_HISTORIC_URL}?city=${dataString.city}&start_date=${dataString.start}&end_date=${dataString.end}&key=${process.env.WEATHERBIT_KEY}`;
     fetch(requestString)
         .then(res => res.json())
         .then(res => {
             response.send(res);
+        })
+        .catch(err => {
+            response.send(err);
+        });
+});
+
+app.post(('/historicweather'), async (request, response) => {
+    const dataString = request.body;
+    const requestString = `${process.env.VISUALCROSSING_HISTORIC_URL}&locations=${dataString.city}&startDateTime=${dataString.start}&key=${process.env.VISUALCROSSING_KEY}`;
+    fetch(requestString)
+        .then(res => res.json())
+        .then(res => {
+            response.send(res.locations[dataString.city]);
         })
         .catch(err => {
             response.send(err);

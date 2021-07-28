@@ -36,6 +36,12 @@ function calcMinDate(numDays) {
     return formatDate(min);
 }
 
+const todaysDate = () => {
+    let today = new Date();
+    today.setDate(today.getDate());
+    return formatDate(today);
+}
+
 // array for the packing list
 const recommendedPacking = [
     "<li class=\"checked\">Clothing</li>",
@@ -170,7 +176,7 @@ function loadAllListeners() {
         if (newCity.value.length < 3) { alert("Please enter a city of 3 or more characters"); return; }
         let datesToAPI = checkDateRange(newTripDate.value);
         datesToAPI.city = newCity.value;
-        fetch('/historicweather', {
+        fetch('http://localhost:5000/historicweather', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -181,6 +187,7 @@ function loadAllListeners() {
             .then(res => res.json())
             .then(message => {
                 if (message.error) {
+                    console.log("message", message);
                     throw message;
                 } else {
                     showHistoric(message);
@@ -217,7 +224,7 @@ updatePackingLists();
 // after card is created, load all data before showing to user
 function loadCardData(city, newCard) {
     // get lat&lon from geonames
-    fetch('/geolocation', {
+    fetch('http://localhost:5000/geolocation', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -230,7 +237,7 @@ function loadCardData(city, newCard) {
             let location = {};
             location.lng = parseFloat(coordinates.geonames[0].lng);
             location.lat = parseFloat(coordinates.geonames[0].lat);
-            fetch('/weatherforecast', {
+            fetch('http://localhost:5000/weatherforecast', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -241,7 +248,7 @@ function loadCardData(city, newCard) {
                 .then(data => data.json())
                 .then(forecast => {
                     if (calcDaysAway(city.date) < 8) fillForecast(city, forecast);
-                    fetch('/backgroundurl', {
+                    fetch('http://localhost:5000/backgroundurl', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -405,9 +412,18 @@ function showActiveCityInfo(data, card) {
     hotelAddress.value = data.hotel.address;
     if (storage[cardStorageLocation(card)].data.notes) tripNotes.value = storage[cardStorageLocation(card)].data.notes;
     if (storage[cardStorageLocation(card)].data.checklist) listItems.innerHTML = storage[cardStorageLocation(card)].data.checklist;
-    if (data.imageURL) {
+    // console.log("times through", data);
+    if (data.imageURL && data.imageURLDate === todaysDate()) {
+        // console.log(data.imageURLDate, todaysDate());
         cardTripInfo.style.backgroundImage = `url(${data.imageURL})`;
-    } else {
+    }
+    else if (data.imageURLDate !== todaysDate()) {
+        data.imageURLDate = "2022";
+        data.imageURL = "";
+        // console.log("refresh", data);
+        getBackgroundURL(data);
+    }
+    else {
         cardTripInfo.style.backgroundImage = "";
     }
     if (data.date) {
@@ -440,13 +456,29 @@ function showActiveCityInfo(data, card) {
     }
 }
 
+const findIcon = (term) => {
+    const key = {
+        "snow": "s03",
+        "rain": "r01",
+        "fog": "f01",
+        "wind": "a02",
+        "cloudy": "a02",
+        "partly-cloudy-day": "c02",
+        "partly-cloudy-night": "a04",
+        "clear": "c01",
+        "clear-day": "c01",
+        "clear-night": "a06",
+    }
+    return `${key[term]}.svg`;
+}
+
 // based on the destination date, the historic or forecast weather is pulled from the API
 function getValidWeather(data, card) {
     if (!pullingWeatherAPI) {
         document.body.style.cursor = "waiting";
         pullingWeatherAPI = true;
         if (calcDaysAway(data.date) < 8 && calcDaysAway(data.date) >= 0) {
-            fetch('/geolocation', {
+            fetch('http://localhost:5000/geolocation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -460,7 +492,7 @@ function getValidWeather(data, card) {
 
                     location.lng = coordinates.geonames[0].lng;
                     location.lat = coordinates.geonames[0].lat;
-                    fetch('/weatherforecast', {
+                    fetch('http://localhost:5000/weatherforecast', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -481,7 +513,7 @@ function getValidWeather(data, card) {
         } else { // fetch historical data
             let datesToAPI = checkDateRange(data.date);
             datesToAPI.city = `${data.name.replace(/\s/g, "")}`;
-            fetch('/historicweather', {
+            fetch('http://localhost:5000/historicweather', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -495,10 +527,10 @@ function getValidWeather(data, card) {
                         throw forecast;
                     } else {
                         data.weather[0].validDate = data.date;
-                        data.weather[0].high = "--";
-                        data.weather[0].low = "--";
-                        data.weather[0].icon = `${forecast.data[0].weather.icon.slice(0, 3)}.svg`;
-                        data.weather[0].desc = "Typically " + forecast.data[0].weather.description + " / " + forecast.data[0].temp.toFixed(0) + "°C";
+                        data.weather[0].high = forecast.values[0].maxt.toFixed(0) + "°C";
+                        data.weather[0].low = forecast.values[0].mint.toFixed(0) + "°C";
+                        data.weather[0].icon = findIcon(forecast.values[0].icon.toLowerCase());
+                        data.weather[0].desc = "Typically " + forecast.values[0].conditions + " / " + forecast.values[0].temp.toFixed(0) + "°C";
                     }
                 })
                 .then(() => {
@@ -526,9 +558,10 @@ function verifyDataPull(cityName, card) {
 
 // historic weather
 function showHistoric(data) {
-    potentialWeather.innerHTML = `Typical Weather for ${data.city_name}, ${data.country_code}
+    console.log(data);
+    potentialWeather.innerHTML = `Typical Weather for ${data.name}
         <br> <br>
-            The average temperature is ${data.data[0].temp.toFixed(0)}°C and ${data.data[0].weather.description}`
+            The average temperature is ${data.values[0].temp.toFixed(0)}°C and ${data.values[0].conditions}`
 }
 
 // get range of dates for API request
@@ -553,11 +586,16 @@ function formatDate(date) {
 
 // pull a background image and choose randomly one to set as location background
 function getBackgroundURL(city) {
+    // console.log("data alert city - ", city, city.name, city.imageCitySearched, city.imageURLDate);
+
+    if (city.imageURLDate === todaysDate() && city.imageCitySearched.toLowerCase() === city.name.toLowerCase()) return;
     document.body.style.cursor = "waiting";
-    const cityImage = city.imageCitySearched.toLowerCase();
+    //const cityImage = city.imageCitySearched.toLowerCase();
+    // console.log("data alert todays", todaysDate());
+    // console.log("data alert city", city.name, city.imageURLDate);
     if (city.name === "next location" || city.name === "final location") return;
     // if (cityImage && cityImage === city.name.toLowerCase() || city.name === "next location" || city.name === "final location") return;
-    fetch('/backgroundurl', {
+    fetch('http://localhost:5000/backgroundurl', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -572,12 +610,14 @@ function getBackgroundURL(city) {
             } else {
                 city.imageURL = message.hits[Math.floor(Math.random() * message.hits.length)].largeImageURL;
                 city.imageCitySearched = city.name;
-                verifyDataPull(city.name, activeCard);
+                city.imageURLDate = todaysDate();
+                console.log(city.imageURLDate, todaysDate());
+                //verifyDataPull(city.name, activeCard);
             }
         })
         .catch(err => {
             alert(`Cannot pull background image. 
-        Message: ${err.error}.
+        Message: ${err}.
         Could not find "${city.name.toUpperCase()}".
         
         - Please check the city entered -
