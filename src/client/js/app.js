@@ -508,7 +508,7 @@ function getValidWeather(data, card) {
                             document.body.style.cursor = "auto";
                             return;
                         })
-                        .catch(err => alert("There was a problem getting the forecast...", err))
+                        .catch(err => alert("There was a problem getting the forecast...Check you adblocker", err))
                 }).catch(err => alert("Please check city name as it could not be found..."))
         } else { // fetch historical data
             let datesToAPI = checkDateRange(data.date);
@@ -558,7 +558,6 @@ function verifyDataPull(cityName, card) {
 
 // historic weather
 function showHistoric(data) {
-    console.log(data);
     potentialWeather.innerHTML = `Typical Weather for ${data.name}
         <br> <br>
             The average temperature is ${data.values[0].temp.toFixed(0)}°C and ${data.values[0].conditions}`
