@@ -6,7 +6,7 @@ dotenv.config();
 exports.handler = function (event, context, callback) {
     const dataString = JSON.parse(event.body);
     const { VISUALCROSSING_HISTORIC_URL, VISUALCROSSING_KEY } = process.env;
-    const requestString = `${process.env.VISUALCROSSING_HISTORIC_URL}&locations=${dataString.city}&startDateTime=${dataString.start}&key=${process.env.VISUALCROSSING_KEY}`;
+    const requestString = `${VISUALCROSSING_HISTORIC_URL}&locations=${dataString.city}&startDateTime=${dataString.start}&key=${VISUALCROSSING_KEY}`;
     fetch(requestString)
         .then(res => res.json())
         .then(message => {
