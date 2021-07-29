@@ -53,6 +53,9 @@ module.exports = {
             patterns: [
                 { from: "src/client/views/icons/weather/", to: "icons/weather" },
                 { from: "src/client/views/logo.svg", to: "icons/" },
+                { from: "src/client/media/images/madrid.jpg", to: "images/" },
+                { from: "src/client/media/images/paris.jpg", to: "images/" },
+                { from: "src/client/media/images/london.jpg", to: "images/" },
             ],
         }),
     ]

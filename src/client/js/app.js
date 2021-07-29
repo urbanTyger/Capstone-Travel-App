@@ -63,7 +63,7 @@ let storage = [{
     "data": {
         "cities": [
             {
-                "name": "madrid", "date": "2021-02-10", "imageURL": "src/client/media/images/madrid.jpg", "imageCitySearched": "",
+                "name": "madrid", "date": "2021-02-10", "imageURL": "images/madrid.jpg", "imageCitySearched": "",
                 "weather": [
                     { "icon": "a01.svg", "high": "65", "low": "60", "desc": "warm" },
                 ],
@@ -74,7 +74,7 @@ let storage = [{
                 "hotel": { "name": "The Madrid Hotel", "address": "Spain Street" }
             },
             {
-                "name": "paris", "date": "2021-03-03", "imageURL": "src/client/media/images/paris.jpg", "imageCitySearched": "",
+                "name": "paris", "date": "2021-03-03", "imageURL": "images/paris.jpg", "imageCitySearched": "",
                 "weather": [
                     { "icon": "a01.svg", "high": "22", "low": "0", "desc": "okay" },
                 ],
@@ -84,7 +84,7 @@ let storage = [{
                 },
                 "hotel": { "name": "The Paris Hotel", "address": "Paris Street" }
             }, {
-                "name": "london", "date": "2021-12-12", "imageURL": "src/client/media/images/london.jpg", "imageCitySearched": "",
+                "name": "london", "date": "2021-12-12", "imageURL": "images/london.jpg", "imageCitySearched": "",
                 "weather": [
                     { "icon": "c01.svg", "high": "35", "low": "0", "desc": "Slightly Cloudy all day", "validDate": "" },
                 ],
