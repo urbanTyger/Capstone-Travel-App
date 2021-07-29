@@ -3,25 +3,25 @@
   publish = "dist"
 
 [[redirects]]
-  from = "http://localhost:5000/historicweather"
+  from = "/historicweather"
   to = "/.netlify/functions/historicweather/"
   status = 201
   force = true
 
 [[redirects]]
-  from = "http://localhost:5000/weatherforecast"
+  from = "/weatherforecast"
   to = "/.netlify/functions/weatherforecast/"
   status = 201
   force = true
 
 [[redirects]]
-  from = "http://localhost:5000/backgroundurl"
+  from = "/backgroundurl"
   to = "/.netlify/functions/backgroundurl/"
   status = 201
   force = true
 
 [[redirects]]
-  from = "http://localhost:5000/geolocation"
+  from = "/geolocation"
   to = "/.netlify/functions/geolocation/"
   status = 201
   force = true
