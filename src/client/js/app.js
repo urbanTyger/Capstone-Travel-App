@@ -63,7 +63,7 @@ let storage = [{
     "data": {
         "cities": [
             {
-                "name": "madrid", "date": "2021-02-10", "imageURL": "https://pixabay.com/get/ga616dd33302019d1865fbaee6a4fa4db51c8ad0cd8b792b140f28d0ca2d608d44ac38889c7d4dbb332b8229aae7c36a2c84d8e98fc0418d11131c33ca40a7025_1280.jpg", "imageCitySearched": "",
+                "name": "madrid", "date": "2021-02-10", "imageURL": "src/client/media/images/madrid.jpg", "imageCitySearched": "",
                 "weather": [
                     { "icon": "a01.svg", "high": "65", "low": "60", "desc": "warm" },
                 ],
@@ -74,7 +74,7 @@ let storage = [{
                 "hotel": { "name": "The Madrid Hotel", "address": "Spain Street" }
             },
             {
-                "name": "paris", "date": "2021-03-03", "imageURL": "https://pixabay.com/get/g0dad55f9bc6f3e69a5eec8bb0b3ed09808ba78765f208237b9853c3382d6b2bf19d9821065209f6d235b435e1527fae99ec6cd60a7b54920138709a1548d6385_1280.jpg", "imageCitySearched": "",
+                "name": "paris", "date": "2021-03-03", "imageURL": "src/client/media/images/paris.jpg", "imageCitySearched": "",
                 "weather": [
                     { "icon": "a01.svg", "high": "22", "low": "0", "desc": "okay" },
                 ],
@@ -84,7 +84,7 @@ let storage = [{
                 },
                 "hotel": { "name": "The Paris Hotel", "address": "Paris Street" }
             }, {
-                "name": "london", "date": "2021-12-12", "imageURL": "https://pixabay.com/get/g3069f0e731c9b2dd1c41547969f844387582fdfc9e3f8b4264a0821fad7c340569cac216a3a0a926006413fc38cf046d115c2919eda9547b50b7ff48e1c44f68_1280.jpg", "imageCitySearched": "",
+                "name": "london", "date": "2021-12-12", "imageURL": "src/client/media/images/london.jpg", "imageCitySearched": "",
                 "weather": [
                     { "icon": "c01.svg", "high": "35", "low": "0", "desc": "Slightly Cloudy all day", "validDate": "" },
                 ],
@@ -412,15 +412,16 @@ function showActiveCityInfo(data, card) {
     hotelAddress.value = data.hotel.address;
     if (storage[cardStorageLocation(card)].data.notes) tripNotes.value = storage[cardStorageLocation(card)].data.notes;
     if (storage[cardStorageLocation(card)].data.checklist) listItems.innerHTML = storage[cardStorageLocation(card)].data.checklist;
-    // console.log("times through", data);
-    if (data.imageURL && data.imageURLDate === todaysDate()) {
+    // console.log("times through", data.imageURL, data.imageURLDate, todaysDate());
+    if (data.imageURL && data.imageURLDate === todaysDate() || !data.imageURLDate) {
         // console.log(data.imageURLDate, todaysDate());
         cardTripInfo.style.backgroundImage = `url(${data.imageURL})`;
+        // console.log("set bgImage");
     }
     else if (data.imageURLDate !== todaysDate()) {
-        data.imageURLDate = "2022";
+        data.imageURLDate = "";
         data.imageURL = "";
-        // console.log("refresh", data);
+        // console.log("refresh");
         getBackgroundURL(data);
     }
     else {
@@ -508,7 +509,7 @@ function getValidWeather(data, card) {
                             document.body.style.cursor = "auto";
                             return;
                         })
-                        .catch(err => alert("There was a problem getting the forecast...Check you adblocker", err))
+                        .catch(err => alert("There was a problem getting the forecast. Please check your adblocker", err))
                 }).catch(err => alert("Please check city name as it could not be found..."))
         } else { // fetch historical data
             let datesToAPI = checkDateRange(data.date);
@@ -586,7 +587,6 @@ function formatDate(date) {
 // pull a background image and choose randomly one to set as location background
 function getBackgroundURL(city) {
     // console.log("data alert city - ", city, city.name, city.imageCitySearched, city.imageURLDate);
-
     if (city.imageURLDate === todaysDate() && city.imageCitySearched.toLowerCase() === city.name.toLowerCase()) return;
     document.body.style.cursor = "waiting";
     //const cityImage = city.imageCitySearched.toLowerCase();
@@ -607,10 +607,11 @@ function getBackgroundURL(city) {
             if (message.error) {
                 throw message;
             } else {
+                console.log("fetching background image");
+                city.imageURLDate = todaysDate();
                 city.imageURL = message.hits[Math.floor(Math.random() * message.hits.length)].largeImageURL;
                 city.imageCitySearched = city.name;
-                city.imageURLDate = todaysDate();
-                console.log(city.imageURLDate, todaysDate());
+                console.log("finished fetch", city);
                 //verifyDataPull(city.name, activeCard);
             }
         })

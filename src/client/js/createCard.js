@@ -154,7 +154,7 @@ function repopulatePage(mainStorageArray) {
         let storedCard = createCard(mainStorageArray[i]);
         tripList.insertBefore(storedCard, moreTrips);
         storedCard.focus();
-        console.log("stored Card", storedCard);
+        // console.log("stored Card", storedCard);
         pullData(mainStorageArray[i].data.cities[0].name, storedCard);
         // updatePackingLists();
     }
