@@ -17,6 +17,9 @@ const currentTrips = document.querySelector('.footer-current-trips');
 const archiveTitle = document.querySelector('.title-archive');
 let locations = document.querySelectorAll('.locations');
 let cities = document.querySelectorAll('.city');
+let serverLink = "http://localhost:5000";
+
+if (process.env.NODE_ENV === 'production') { serverLink = ""; }
 
 // track if the user is currently editing a card
 let editMode = false;
@@ -65,7 +68,7 @@ let storage = [{
             {
                 "name": "madrid", "date": "2021-02-10", "imageURL": "images/madrid.jpg", "imageCitySearched": "",
                 "weather": [
-                    { "icon": "a01.svg", "high": "65", "low": "60", "desc": "warm" },
+                    { "icon": "a01.svg", "high": "65", "low": "60", "desc": "warm", "validDate": "" },
                 ],
                 "flight": {
                     "depart": { "code": "UZH", "time": "0705", "info": "UZ35 Spanish Air" },
@@ -76,7 +79,7 @@ let storage = [{
             {
                 "name": "paris", "date": "2021-03-03", "imageURL": "images/paris.jpg", "imageCitySearched": "",
                 "weather": [
-                    { "icon": "a01.svg", "high": "22", "low": "0", "desc": "okay" },
+                    { "icon": "a01.svg", "high": "22", "low": "0", "desc": "okay", "validDate": "" },
                 ],
                 "flight": {
                     "depart": { "code": "ZZZ", "time": "1900", "info": "sooo" },
@@ -176,7 +179,7 @@ function loadAllListeners() {
         if (newCity.value.length < 3) { alert("Please enter a city of 3 or more characters"); return; }
         let datesToAPI = checkDateRange(newTripDate.value);
         datesToAPI.city = newCity.value;
-        fetch('/historicweather', {
+        fetch(`${serverLink}/historicweather`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -224,7 +227,7 @@ updatePackingLists();
 // after card is created, load all data before showing to user
 function loadCardData(city, newCard) {
     // get lat&lon from geonames
-    fetch('/geolocation', {
+    fetch(`${serverLink}/geolocation`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -237,7 +240,7 @@ function loadCardData(city, newCard) {
             let location = {};
             location.lng = parseFloat(coordinates.geonames[0].lng);
             location.lat = parseFloat(coordinates.geonames[0].lat);
-            fetch('/weatherforecast', {
+            fetch(`${serverLink}/weatherforecast`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -248,7 +251,7 @@ function loadCardData(city, newCard) {
                 .then(data => data.json())
                 .then(forecast => {
                     if (calcDaysAway(city.date) < 8) fillForecast(city, forecast);
-                    fetch('/backgroundurl', {
+                    fetch(`${serverLink}/backgroundurl`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -479,7 +482,7 @@ function getValidWeather(data, card) {
         document.body.style.cursor = "waiting";
         pullingWeatherAPI = true;
         if (calcDaysAway(data.date) < 8 && calcDaysAway(data.date) >= 0) {
-            fetch('/geolocation', {
+            fetch(`${serverLink}/geolocation`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -493,7 +496,7 @@ function getValidWeather(data, card) {
 
                     location.lng = coordinates.geonames[0].lng;
                     location.lat = coordinates.geonames[0].lat;
-                    fetch('/weatherforecast', {
+                    fetch(`${serverLink}/weatherforecast`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -514,7 +517,7 @@ function getValidWeather(data, card) {
         } else { // fetch historical data
             let datesToAPI = checkDateRange(data.date);
             datesToAPI.city = `${data.name.replace(/\s/g, "")}`;
-            fetch('/historicweather', {
+            fetch(`${serverLink}/historicweather`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -594,7 +597,7 @@ function getBackgroundURL(city) {
     // console.log("data alert city", city.name, city.imageURLDate);
     if (city.name === "next location" || city.name === "final location") return;
     // if (cityImage && cityImage === city.name.toLowerCase() || city.name === "next location" || city.name === "final location") return;
-    fetch('/backgroundurl', {
+    fetch(`${serverLink}/backgroundurl`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
