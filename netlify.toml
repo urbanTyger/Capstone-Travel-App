@@ -34,4 +34,3 @@
     Cache-Control = "public, max-age=604800"
     Access-Control-Allow-Origin = "*"
     access-control-allow-credentials = "true"
-    access-control-allow-origin = "*"
