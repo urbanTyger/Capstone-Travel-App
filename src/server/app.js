@@ -14,7 +14,7 @@ const corsOptions = {
     optionSuccessStatus: 200
 }
 
-app.use(cors());
+// app.use(cors());
 app.use(cors(corsOptions));
 app.use(express.static('dist'));
 // parse application/x-www-form-urlencoded
@@ -33,6 +33,7 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     next();
+}
 
 app.get('/', function (req, res) {
     res.status(200).json({ "answer": "Hello World!" });
