@@ -29,10 +29,10 @@
 [[headers]]
   for = "/*"
   [headers.values]
+    Access-Control-Allow-Origin = "*"
     X-Frame-Options = "deny"
     X-XSS-Protection = "1; mode=block"
     Cache-Control = "public, max-age=604800"
-    Access-Control-Allow-Origin = "*"
     access-control-allow-credentials = "true"
     Cross-Origin-Resource-Policy = "cross-origin"
-    Referrer-Policy = "origin"
+    Referrer-Policy = "origin-when-cross-origin"
