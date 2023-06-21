@@ -31,7 +31,6 @@
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, OPTION"
-    Content-Security-Policy = "child-src 'self' app.netlify.com; script-src 'self' app.netlify.com netlify-cdp-loader.netlify.app;"
     Content-Type = "application/json"
     X-Frame-Options = "deny"
     X-XSS-Protection = "1; mode=block"
