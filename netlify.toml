@@ -30,10 +30,10 @@
   for = "/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Content-Security-Policy = "default-src 'self' 'unsafe-inline' https://fonts.gstatic.com plausible.monocletiger.eu plausible.monocletiger.eu/api/event plausible.monocletiger.eu/js/script.js  https://fonts.googleapis.com app.netlify.com;"
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' fonts.gstatic.com plausible.monocletiger.eu/* https://fonts.googleapis.com app.netlify.com;"
     X-Frame-Options = "deny"
     X-XSS-Protection = "1; mode=block"
-    Cache-Control = "public, max-age=604800"
+    Cache-Control = "public, max-age=34800"
     access-control-allow-credentials = "true"
-    Cross-Origin-Resource-Policy = "cross-origin"
+    Cross-Origin-Resource-Policy = "cross-origin" 
     Referrer-Policy = "origin-when-cross-origin"
