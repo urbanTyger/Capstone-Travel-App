@@ -31,7 +31,7 @@
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Content-Security-Policy = "connect-src 'self' plausible.monocletiger.eu app.netlify.com; script-src 'self' app.netlify.com plausible.monocletiger.eu netlify-cdp-loader.netlify.app;"
-    Content-Security-Policy = "default-src 'self' 'unsafe-inline' https://plausible.monocletiger.eu https://fonts.googleapis.com app.netlify.com;"
+    Content-Security-Policy = "default-src 'unsafe-inline' https://plausible.monocletiger.eu https://fonts.googleapis.com app.netlify.com;"
     X-Frame-Options = "deny"
     X-XSS-Protection = "1; mode=block"
     Cache-Control = "public, max-age=604800"
