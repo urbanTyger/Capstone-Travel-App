@@ -30,7 +30,7 @@
   for = "/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Content-Security-Policy = "default-src 'self' 'unsafe-inline' fonts.gstatic.com plausible.monocletiger.eu https://fonts.googleapis.com app.netlify.com https://travel.rogertmiller.com;"
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' fonts.gstatic.com plausible.monocletiger.eu https://fonts.googleapis.com app.netlify.com https://travel.rogertmiller.com https://plausible.monocletiger.eu/api/event;"
     X-Frame-Options = "deny"
     X-XSS-Protection = "1; mode=block"
     Cache-Control = "public, max-age=34800"
